@@ -2,6 +2,8 @@
 name = "rotex-types"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+description = "Types used by rotexengine tools"
 
 [dependencies]
 raw-window-handle = "0.6.2"
