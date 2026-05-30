@@ -15,6 +15,19 @@ pub enum TextureFormat {
     Rgba8Unorm,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum CullMode {
+    None,
+    Front,
+    Back,
+}
+
+impl Default for CullMode {
+    fn default() -> Self {
+        Self::Back
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct TextureDescriptor {
     pub width: u32,
@@ -30,6 +43,7 @@ pub struct MaterialDescriptor {
     pub fragment_shader_spv: Vec<u8>,
     pub fragment_entry: String,
     pub enable_depth: bool,
+    pub cull_mode: CullMode,
     pub texture: Option<TextureId>,
 }
 
@@ -48,6 +62,7 @@ impl MaterialDescriptor {
             fragment_shader_spv,
             fragment_entry,
             enable_depth,
+            cull_mode: CullMode::default(),
             texture,
         }
     }
@@ -59,6 +74,11 @@ impl MaterialDescriptor {
 
     pub fn with_fragment_entry(mut self, entry: impl Into<String>) -> Self {
         self.fragment_entry = entry.into();
+        self
+    }
+
+    pub fn with_cull_mode(mut self, cull_mode: CullMode) -> Self {
+        self.cull_mode = cull_mode;
         self
     }
 }
