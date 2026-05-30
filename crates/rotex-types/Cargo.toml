@@ -1,5 +1,5 @@
 [package]
-name = "rotex_types"
+name = "rotex-types"
 version = "0.1.0"
 edition = "2024"
 
