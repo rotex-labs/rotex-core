@@ -1,9 +1,10 @@
 [package]
 name = "rotex-types"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "MIT"
 description = "Types used by rotexengine tools"
+repository = "https://github.com/rotexengine/rotex-types"
 
 [dependencies]
 raw-window-handle = "0.6.2"
