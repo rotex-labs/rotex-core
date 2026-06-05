@@ -1,5 +1,40 @@
 use crate::resource::geometry::{IndexFormat, VertexBufferLayout};
-use crate::resource::ids::TextureId;
+use crate::resource::ids::{BufferId, TextureId};
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum BufferUsage {
+    Vertex,
+    Index,
+    Uniform,
+    Storage,
+}
+
+#[derive(Debug, Clone)]
+pub struct BufferDescriptor {
+    pub size: u64,
+    pub usage: BufferUsage,
+    pub initial_data: Option<Vec<u8>>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum AccessType {
+    None,
+    ComputeRead,
+    ComputeWrite,
+    ComputeReadWrite,
+    VertexRead,
+    FragmentRead,
+}
+
+#[derive(Debug, Clone)]
+pub struct BufferUsageIntent {
+    pub buffer: BufferId,
+    pub access: AccessType,
+    pub set: u32,
+    pub binding: u32,
+    pub offset: u64,
+    pub size: u64,
+}
 
 #[derive(Debug, Clone)]
 pub struct MeshDescriptor {
@@ -13,6 +48,20 @@ pub struct MeshDescriptor {
 #[derive(Debug, Clone, Copy)]
 pub enum TextureFormat {
     Rgba8Unorm,
+}
+
+impl TextureFormat {
+    pub const fn bytes_per_pixel(self) -> usize {
+        match self {
+            Self::Rgba8Unorm => 4,
+        }
+    }
+
+    pub fn expected_byte_len(self, width: u32, height: u32) -> Option<usize> {
+        (width as usize)
+            .checked_mul(height as usize)?
+            .checked_mul(self.bytes_per_pixel())
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -34,6 +83,14 @@ pub struct TextureDescriptor {
     pub height: u32,
     pub format: TextureFormat,
     pub data: Vec<u8>,
+    pub render_attachment: bool,
+}
+
+impl TextureDescriptor {
+    pub fn with_render_attachment(mut self, render_attachment: bool) -> Self {
+        self.render_attachment = render_attachment;
+        self
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -79,6 +136,50 @@ impl MaterialDescriptor {
 
     pub fn with_cull_mode(mut self, cull_mode: CullMode) -> Self {
         self.cull_mode = cull_mode;
+        self
+    }
+}
+
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+pub struct ComputeBindingLayout {
+    pub set: u32,
+    pub binding: u32,
+    pub readonly: bool,
+}
+
+#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+pub struct ComputePipelineDescriptor {
+    pub shader_spv: Vec<u8>,
+    pub entry_point: String,
+    pub bindings: Vec<ComputeBindingLayout>,
+}
+
+impl ComputePipelineDescriptor {
+    pub fn new(shader_spv: Vec<u8>, entry_point: impl Into<String>) -> Self {
+        Self {
+            shader_spv,
+            entry_point: entry_point.into(),
+            bindings: Vec::new(),
+        }
+    }
+
+    pub fn with_entry_point(mut self, entry_point: impl Into<String>) -> Self {
+        self.entry_point = entry_point.into();
+        self
+    }
+
+    pub fn with_shader_spv(mut self, shader_spv: Vec<u8>) -> Self {
+        self.shader_spv = shader_spv;
+        self
+    }
+
+    pub fn with_compute_shader(mut self, compute_shader_spv: Vec<u8>) -> Self {
+        self.shader_spv = compute_shader_spv;
+        self
+    }
+
+    pub fn with_bindings(mut self, bindings: Vec<ComputeBindingLayout>) -> Self {
+        self.bindings = bindings;
         self
     }
 }

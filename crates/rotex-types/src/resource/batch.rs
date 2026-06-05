@@ -1,12 +1,17 @@
-use crate::resource::descriptors::{MaterialDescriptor, MeshDescriptor, TextureDescriptor};
+use crate::resource::descriptors::{
+    BufferDescriptor, ComputePipelineDescriptor, MaterialDescriptor, MeshDescriptor,
+    TextureDescriptor,
+};
 use crate::resource::geometry::{IndexFormat, VertexBufferLayout};
-use crate::resource::ids::{MaterialId, MeshId, TextureId};
+use crate::resource::ids::{BufferId, ComputePipelineId, MaterialId, MeshId, TextureId};
 
 #[derive(Debug, Clone)]
 pub enum ResourceCreateDescriptor {
     Mesh(MeshDescriptor),
     Texture(TextureDescriptor),
     Material(MaterialDescriptor),
+    Buffer(BufferDescriptor),
+    ComputePipeline(ComputePipelineDescriptor),
 }
 
 #[derive(Debug, Clone)]
@@ -25,6 +30,8 @@ pub enum ResourceHandle {
     Mesh(MeshId),
     Texture(TextureId),
     Material(MaterialId),
+    Buffer(BufferId),
+    ComputePipeline(ComputePipelineId),
 }
 
 #[derive(Debug, Clone)]
@@ -50,6 +57,10 @@ pub enum ResourceUpdateDescriptor {
         id: MaterialId,
         enable_depth: Option<bool>,
         texture: Option<Option<TextureId>>,
+    },
+    Buffer {
+        id: BufferId,
+        data: Vec<u8>,
     },
 }
 
