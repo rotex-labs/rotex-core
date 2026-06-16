@@ -26,9 +26,17 @@ pub struct VertexAttribute {
     pub offset: u64,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum VertexStepMode {
+    #[default]
+    Vertex,
+    Instance,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VertexBufferLayout {
     pub array_stride: u64,
+    pub step_mode: VertexStepMode,
     pub attributes: Vec<VertexAttribute>,
 }
 

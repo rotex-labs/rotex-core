@@ -62,6 +62,8 @@ pub struct DeviceDescriptor {
     pub enable_swapchain: bool,
     pub queues: Vec<QueueRequest>,
     pub required_features: DeviceFeatures,
+    /// Number of frames in flight (command buffer + fence ring). Default: 2.
+    pub frames_in_flight: u32,
 }
 
 impl Default for DeviceDescriptor {
@@ -79,6 +81,7 @@ impl Default for DeviceDescriptor {
                 },
             ],
             required_features: DeviceFeatures::default(),
+            frames_in_flight: 2,
         }
     }
 }
