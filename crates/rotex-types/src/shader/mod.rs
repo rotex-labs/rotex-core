@@ -1,5 +1,6 @@
 use crate::resource::BindGroupLayoutDescriptor;
 use serde::{Deserialize, Serialize};
+use std::hash::{DefaultHasher, Hash, Hasher};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum ShaderStage {
@@ -39,6 +40,7 @@ pub struct ShaderVariantMap {
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct ShaderPackage {
+    pub source_hash: u64,
     pub stage: ShaderStage,
     pub entry_point: String,
     pub layout: AbstractPipelineLayout,
@@ -65,6 +67,19 @@ impl ShaderPackage {
             ShaderPayload::Wgsl(source) => Some(source.as_str()),
             _ => None,
         }
+    }
+
+    pub fn payload_hash(&self) -> u64 {
+        if self.source_hash != 0 {
+            return self.source_hash;
+        }
+        let bytes = self
+            .spirv_bytes()
+            .or_else(|| self.wgsl_source().map(|s| s.as_bytes()))
+            .unwrap_or(b"");
+        let mut hasher = DefaultHasher::new();
+        bytes.hash(&mut hasher);
+        hasher.finish()
     }
 
     pub fn to_bytes(&self) -> Result<Vec<u8>, postcard::Error> {

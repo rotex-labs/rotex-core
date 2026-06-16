@@ -9,13 +9,13 @@ use crate::resource::ids::{
 
 #[derive(Debug, Clone)]
 pub enum ResourceCreateDescriptor {
-    Mesh(MeshDescriptor),
-    Texture(TextureDescriptor),
-    Material(MaterialDescriptor),
-    Buffer(BufferDescriptor),
-    ComputePipeline(ComputePipelineDescriptor),
-    BindGroupLayout(BindGroupLayoutDescriptor),
-    BindGroup(BindGroupDescriptor),
+    Mesh { id: u64, mesh: MeshDescriptor },
+    Texture { id: u64, texture: TextureDescriptor },
+    Material { id: u64, material: MaterialDescriptor },
+    Buffer { id: u64, buffer: BufferDescriptor },
+    ComputePipeline { id: u64, pipeline: ComputePipelineDescriptor },
+    BindGroupLayout { id: u64, layout: BindGroupLayoutDescriptor },
+    BindGroup { id: u64, group: BindGroupDescriptor },
 }
 
 #[derive(Debug, Clone)]
