@@ -1,9 +1,11 @@
 use crate::resource::descriptors::{
-    BufferDescriptor, ComputePipelineDescriptor, MaterialDescriptor, MeshDescriptor,
-    TextureDescriptor,
+    BindGroupDescriptor, BindGroupLayoutDescriptor, BufferDescriptor, ComputePipelineDescriptor,
+    MaterialDescriptor, MeshDescriptor, TextureDescriptor,
 };
-use crate::resource::geometry::{IndexFormat, VertexBufferLayout};
-use crate::resource::ids::{BufferId, ComputePipelineId, MaterialId, MeshId, TextureId};
+use crate::resource::geometry::IndexFormat;
+use crate::resource::ids::{
+    BindGroupId, BindGroupLayoutId, BufferId, ComputePipelineId, MaterialId, MeshId, TextureId,
+};
 
 #[derive(Debug, Clone)]
 pub enum ResourceCreateDescriptor {
@@ -12,6 +14,8 @@ pub enum ResourceCreateDescriptor {
     Material(MaterialDescriptor),
     Buffer(BufferDescriptor),
     ComputePipeline(ComputePipelineDescriptor),
+    BindGroupLayout(BindGroupLayoutDescriptor),
+    BindGroup(BindGroupDescriptor),
 }
 
 #[derive(Debug, Clone)]
@@ -32,6 +36,8 @@ pub enum ResourceHandle {
     Material(MaterialId),
     Buffer(BufferId),
     ComputePipeline(ComputePipelineId),
+    BindGroupLayout(BindGroupLayoutId),
+    BindGroup(BindGroupId),
 }
 
 #[derive(Debug, Clone)]
@@ -43,11 +49,14 @@ pub struct CreatedResources {
 pub enum ResourceUpdateDescriptor {
     Mesh {
         id: MeshId,
-        vertex_data: Vec<u8>,
-        vertex_layout: VertexBufferLayout,
+        vertex_streams: Vec<crate::resource::descriptors::VertexStream>,
         index_data: Vec<u8>,
         index_format: IndexFormat,
         index_count: u32,
+    },
+    MeshVertices {
+        id: MeshId,
+        vertex_data: Vec<u8>,
     },
     Texture {
         id: TextureId,

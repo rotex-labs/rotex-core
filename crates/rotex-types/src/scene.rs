@@ -21,6 +21,7 @@ pub struct MeshInstanceDescriptor {
     pub mesh: MeshId,
     pub material: MaterialId,
     pub transform: [[f32; 4]; 4],
+    pub instance_count: u32,
 }
 
 impl MeshInstanceDescriptor {
@@ -29,11 +30,17 @@ impl MeshInstanceDescriptor {
             mesh,
             material,
             transform: identity4(),
+            instance_count: 1,
         }
     }
 
     pub fn with_transform(mut self, transform: [[f32; 4]; 4]) -> Self {
         self.transform = transform;
+        self
+    }
+
+    pub fn with_instance_count(mut self, instance_count: u32) -> Self {
+        self.instance_count = instance_count.max(1);
         self
     }
 }

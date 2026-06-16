@@ -1,15 +1,11 @@
 //! Frame and pass descriptors for multi-pass rendering and compute.
 //!
-//! # Shader descriptor set convention
+//! Pass descriptors are **user-composed** inputs to `RhiCommand::BeginRenderPass`.
+//! The HAL does not interpret scene data or choose draw strategies — the user
+//! builds explicit command lists (`BindDescriptorSets`, `DrawIndexed`, etc.)
+//! between `BeginRenderPass` and `EndRenderPass`.
 //!
-//! | Set | Binding | Content | Bind frequency |
-//! |-----|---------|---------|----------------|
-//! | 0 | 0 | `view` + `projection` (128-byte UBO) | once per pass |
-//! | 1 | 0 | albedo `sampler2D` / combined image sampler | per material change |
-//! | 2 | 0 | `model` matrix (dynamic UBO, 64-byte stride) | set bound once per pass; dynamic byte offset per draw |
-//!
-//! # Multi-pass example
-//!
+//! Bind group layouts and set indices are user-defined via `BindGroupLayoutDescriptor`.
 //! ```rust
 //! use rotex_types::{ColorAttachmentLoad, FrameDescriptor, FramePass, PassDescriptor};
 //!
