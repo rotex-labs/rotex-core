@@ -298,13 +298,30 @@ impl MaterialDescriptor {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct ComputeBindingLayout {
+    pub set: u32,
+    pub binding: u32,
+    pub readonly: bool,
+}
+
 #[derive(Debug, Clone, Hash, PartialEq, Eq)]
 pub struct ComputePipelineDescriptor {
-    pub shader: crate::shader::ShaderPackage,
+    pub shader_spv: Vec<u8>,
+    pub entry_point: String,
+    pub bindings: Vec<ComputeBindingLayout>,
 }
 
 impl ComputePipelineDescriptor {
+    pub fn from_raw(shader_spv: Vec<u8>, entry_point: String, bindings: Vec<ComputeBindingLayout>) -> Self {
+        Self { shader_spv, entry_point, bindings }
+    }
+
     pub fn new(shader: crate::shader::ShaderPackage) -> Self {
-        Self { shader }
+        Self {
+            shader_spv: shader.spirv_bytes().map(|b| b.to_vec()).unwrap_or_default(),
+            entry_point: shader.entry_point,
+            bindings: Vec::new(),
+        }
     }
 }
