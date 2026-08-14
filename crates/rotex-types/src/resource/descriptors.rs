@@ -241,17 +241,12 @@ impl TextureFormat {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub enum CullMode {
     None,
     Front,
+    #[default]
     Back,
-}
-
-impl Default for CullMode {
-    fn default() -> Self {
-        Self::Back
-    }
 }
 
 #[derive(Debug, Clone)]

@@ -8,6 +8,7 @@ use crate::resource::ids::{
 };
 
 #[derive(Debug, Clone)]
+#[allow(clippy::large_enum_variant)]
 pub enum ResourceCreateDescriptor {
     Mesh { id: u64, mesh: MeshDescriptor },
     Texture { id: u64, texture: TextureDescriptor },
