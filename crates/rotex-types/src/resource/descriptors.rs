@@ -308,8 +308,16 @@ pub struct ComputePipelineDescriptor {
 }
 
 impl ComputePipelineDescriptor {
-    pub fn from_raw(shader_spv: Vec<u8>, entry_point: String, bindings: Vec<ComputeBindingLayout>) -> Self {
-        Self { shader_spv, entry_point, bindings }
+    pub fn from_raw(
+        shader_spv: Vec<u8>,
+        entry_point: String,
+        bindings: Vec<ComputeBindingLayout>,
+    ) -> Self {
+        Self {
+            shader_spv,
+            entry_point,
+            bindings,
+        }
     }
 
     pub fn new(shader: crate::shader::ShaderPackage) -> Self {

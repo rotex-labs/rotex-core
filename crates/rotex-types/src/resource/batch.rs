@@ -10,13 +10,34 @@ use crate::resource::ids::{
 #[derive(Debug, Clone)]
 #[allow(clippy::large_enum_variant)]
 pub enum ResourceCreateDescriptor {
-    Mesh { id: u64, mesh: MeshDescriptor },
-    Texture { id: u64, texture: TextureDescriptor },
-    Material { id: u64, material: MaterialDescriptor },
-    Buffer { id: u64, buffer: BufferDescriptor },
-    ComputePipeline { id: u64, pipeline: ComputePipelineDescriptor },
-    BindGroupLayout { id: u64, layout: BindGroupLayoutDescriptor },
-    BindGroup { id: u64, group: BindGroupDescriptor },
+    Mesh {
+        id: u64,
+        mesh: MeshDescriptor,
+    },
+    Texture {
+        id: u64,
+        texture: TextureDescriptor,
+    },
+    Material {
+        id: u64,
+        material: MaterialDescriptor,
+    },
+    Buffer {
+        id: u64,
+        buffer: BufferDescriptor,
+    },
+    ComputePipeline {
+        id: u64,
+        pipeline: ComputePipelineDescriptor,
+    },
+    BindGroupLayout {
+        id: u64,
+        layout: BindGroupLayoutDescriptor,
+    },
+    BindGroup {
+        id: u64,
+        group: BindGroupDescriptor,
+    },
 }
 
 #[derive(Debug, Clone)]

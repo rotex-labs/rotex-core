@@ -92,7 +92,11 @@ impl ShaderPackage {
 }
 
 impl GraphicsShaderPackage {
-    pub fn new(vertex: ShaderPackage, fragment: ShaderPackage, layout: AbstractPipelineLayout) -> Self {
+    pub fn new(
+        vertex: ShaderPackage,
+        fragment: ShaderPackage,
+        layout: AbstractPipelineLayout,
+    ) -> Self {
         Self {
             vertex,
             fragment,
