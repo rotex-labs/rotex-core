@@ -9,18 +9,10 @@ use rotex_types::{
 };
 
 /// Caller-owned stand-ins. The rewriter never allocates a GPU resource.
+#[derive(Default)]
 pub struct EmulationResources {
     pub push_constant_buffer: Option<BufferId>,
     pub texture_pass_fallback: Option<PassColorTarget>,
-}
-
-impl Default for EmulationResources {
-    fn default() -> Self {
-        Self {
-            push_constant_buffer: None,
-            texture_pass_fallback: None,
-        }
-    }
 }
 
 /// Lower absent features, then drop repeated fixed-function state.
