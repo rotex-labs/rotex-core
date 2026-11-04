@@ -3,11 +3,15 @@ use crate::resource::ids::{BindGroupLayoutId, BufferId, TextureId};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[non_exhaustive]
 pub enum BindingType {
     UniformBuffer,
     UniformBufferDynamic,
     StorageBuffer,
     CombinedImageSampler,
+    SampledTexture,
+    Sampler,
+    StorageTexture,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
@@ -83,13 +87,17 @@ pub enum BufferUsage {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
-pub struct BufferUsages(u8);
+pub struct BufferUsages(u16);
 
 impl BufferUsages {
     pub const VERTEX: Self = Self(1 << 0);
     pub const INDEX: Self = Self(1 << 1);
     pub const UNIFORM: Self = Self(1 << 2);
     pub const STORAGE: Self = Self(1 << 3);
+    pub const COPY_SRC: Self = Self(1 << 4);
+    pub const COPY_DST: Self = Self(1 << 5);
+    pub const INDIRECT: Self = Self(1 << 6);
+    pub const QUERY_RESOLVE: Self = Self(1 << 7);
 
     pub const fn empty() -> Self {
         Self(0)
@@ -155,6 +163,7 @@ impl Default for BufferDescriptor {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
 pub enum AccessType {
     None,
     ComputeRead,
@@ -222,24 +231,7 @@ impl MeshDescriptor {
     }
 }
 
-#[derive(Debug, Clone, Copy)]
-pub enum TextureFormat {
-    Rgba8Unorm,
-}
-
-impl TextureFormat {
-    pub const fn bytes_per_pixel(self) -> usize {
-        match self {
-            Self::Rgba8Unorm => 4,
-        }
-    }
-
-    pub fn expected_byte_len(self, width: u32, height: u32) -> Option<usize> {
-        (width as usize)
-            .checked_mul(height as usize)?
-            .checked_mul(self.bytes_per_pixel())
-    }
-}
+use crate::format::TextureFormat;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub enum CullMode {
@@ -305,6 +297,67 @@ pub struct ComputePipelineDescriptor {
     pub shader_spv: Vec<u8>,
     pub entry_point: String,
     pub bindings: Vec<ComputeBindingLayout>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+pub enum FilterMode {
+    Nearest,
+    #[default]
+    Linear,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+pub enum AddressMode {
+    #[default]
+    ClampToEdge,
+    Repeat,
+    MirrorRepeat,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+pub struct SamplerDescriptor {
+    pub mag_filter: FilterMode,
+    pub min_filter: FilterMode,
+    pub address_mode: AddressMode,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+pub enum PrimitiveTopology {
+    PointList,
+    LineList,
+    #[default]
+    TriangleList,
+    TriangleStrip,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+pub struct BlendState {
+    pub enabled: bool,
+}
+
+#[derive(Debug, Clone)]
+pub struct GraphicsPipelineDescriptor {
+    pub shaders: crate::shader::GraphicsShaderPackage,
+    pub vertex_buffers: Vec<crate::resource::geometry::VertexBufferLayout>,
+    pub topology: PrimitiveTopology,
+    pub cull_mode: CullMode,
+    pub depth_enabled: bool,
+    pub depth_write: bool,
+    pub blend: BlendState,
+    pub targets: Vec<TextureFormat>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+pub enum QueryType {
+    #[default]
+    Timestamp,
+    Occlusion,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct QuerySetDescriptor {
+    pub count: u32,
+    pub ty: QueryType,
 }
 
 impl ComputePipelineDescriptor {

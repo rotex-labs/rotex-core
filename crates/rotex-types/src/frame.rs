@@ -2,7 +2,7 @@
 //!
 //! Pass descriptors are **user-composed** inputs to `RhiCommand::BeginRenderPass`.
 //! The HAL does not interpret scene data or choose draw strategies — the user
-//! builds explicit command lists (`BindDescriptorSets`, `DrawIndexed`, etc.)
+//! builds explicit command lists (`BindGroups`, `DrawIndexed`, etc.)
 //! between `BeginRenderPass` and `EndRenderPass`.
 //!
 //! Bind group layouts and set indices are user-defined via `BindGroupLayoutDescriptor`.
@@ -36,10 +36,32 @@ pub enum DepthAttachmentLoad {
     None,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+pub enum StoreOp {
+    #[default]
+    Store,
+    Discard,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum PassColorTarget {
-    Swapchain,
+    Presentation,
     Texture(TextureId),
+}
+
+#[derive(Debug, Clone)]
+pub struct ColorAttachment {
+    pub target: PassColorTarget,
+    pub load: ColorAttachmentLoad,
+    pub store: StoreOp,
+    pub clear_color: [f32; 4],
+}
+
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct DepthStencilAttachment {
+    pub load: DepthAttachmentLoad,
+    pub store: StoreOp,
+    pub clear_depth: f32,
 }
 
 #[derive(Debug, Clone)]
@@ -52,19 +74,44 @@ pub struct PassDescriptor {
     pub clear_depth: f32,
     pub instance_indices: Vec<usize>,
     pub buffer_intents: Vec<BufferUsageIntent>,
+    pub color_store: StoreOp,
+    pub depth_store: StoreOp,
 }
 
 impl PassDescriptor {
     pub fn new(name: impl Into<String>) -> Self {
         Self {
             name: name.into(),
-            color_target: PassColorTarget::Swapchain,
+            color_target: PassColorTarget::Presentation,
             color_load: ColorAttachmentLoad::Clear,
             clear_color: [0.04, 0.05, 0.08, 1.0],
             depth_load: DepthAttachmentLoad::None,
             clear_depth: 1.0,
             instance_indices: Vec::new(),
             buffer_intents: Vec::new(),
+            color_store: StoreOp::Store,
+            depth_store: StoreOp::Store,
+        }
+    }
+
+    pub fn color_attachment(&self) -> ColorAttachment {
+        ColorAttachment {
+            target: self.color_target,
+            load: self.color_load,
+            store: self.color_store,
+            clear_color: self.clear_color,
+        }
+    }
+
+    pub fn depth_stencil_attachment(&self) -> Option<DepthStencilAttachment> {
+        if self.uses_depth_attachment() {
+            Some(DepthStencilAttachment {
+                load: self.depth_load,
+                store: self.depth_store,
+                clear_depth: self.clear_depth,
+            })
+        } else {
+            None
         }
     }
 

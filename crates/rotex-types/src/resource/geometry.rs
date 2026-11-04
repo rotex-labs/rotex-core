@@ -5,16 +5,18 @@ pub enum VertexFormat {
     Float32x3,
     Float32x4,
     Uint32,
+    Unorm8x4,
+    Float16x2,
+    Sint32,
 }
 
 impl VertexFormat {
     pub fn size(&self) -> u64 {
         match self {
-            Self::Float32 => 4,
+            Self::Float32 | Self::Uint32 | Self::Unorm8x4 | Self::Float16x2 | Self::Sint32 => 4,
             Self::Float32x2 => 8,
             Self::Float32x3 => 12,
             Self::Float32x4 => 16,
-            Self::Uint32 => 4,
         }
     }
 }

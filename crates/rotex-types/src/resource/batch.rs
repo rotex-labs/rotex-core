@@ -1,13 +1,16 @@
 use crate::resource::descriptors::{
     BindGroupDescriptor, BindGroupLayoutDescriptor, BufferDescriptor, ComputePipelineDescriptor,
-    MaterialDescriptor, MeshDescriptor, TextureDescriptor,
+    GraphicsPipelineDescriptor, MaterialDescriptor, MeshDescriptor, QuerySetDescriptor,
+    SamplerDescriptor, TextureDescriptor,
 };
 use crate::resource::geometry::IndexFormat;
 use crate::resource::ids::{
-    BindGroupId, BindGroupLayoutId, BufferId, ComputePipelineId, MaterialId, MeshId, TextureId,
+    BindGroupId, BindGroupLayoutId, BufferId, ComputePipelineId, GraphicsPipelineId, MaterialId,
+    MeshId, QuerySetId, SamplerId, TextureId,
 };
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 #[allow(clippy::large_enum_variant)]
 pub enum ResourceCreateDescriptor {
     Mesh {
@@ -38,6 +41,18 @@ pub enum ResourceCreateDescriptor {
         id: u64,
         group: BindGroupDescriptor,
     },
+    Sampler {
+        id: u64,
+        sampler: SamplerDescriptor,
+    },
+    GraphicsPipeline {
+        id: u64,
+        pipeline: GraphicsPipelineDescriptor,
+    },
+    QuerySet {
+        id: u64,
+        query_set: QuerySetDescriptor,
+    },
 }
 
 #[derive(Debug, Clone)]
@@ -52,6 +67,7 @@ impl ResourceBatchCreate {
 }
 
 #[derive(Debug, Clone, Copy)]
+#[non_exhaustive]
 pub enum ResourceHandle {
     Mesh(MeshId),
     Texture(TextureId),
@@ -60,6 +76,9 @@ pub enum ResourceHandle {
     ComputePipeline(ComputePipelineId),
     BindGroupLayout(BindGroupLayoutId),
     BindGroup(BindGroupId),
+    Sampler(SamplerId),
+    GraphicsPipeline(GraphicsPipelineId),
+    QuerySet(QuerySetId),
 }
 
 #[derive(Debug, Clone)]
@@ -68,6 +87,7 @@ pub struct CreatedResources {
 }
 
 #[derive(Debug, Clone)]
+#[non_exhaustive]
 pub enum ResourceUpdateDescriptor {
     Mesh {
         id: MeshId,
@@ -92,6 +112,9 @@ pub enum ResourceUpdateDescriptor {
     Buffer {
         id: BufferId,
         data: Vec<u8>,
+    },
+    Destroy {
+        handle: ResourceHandle,
     },
 }
 
