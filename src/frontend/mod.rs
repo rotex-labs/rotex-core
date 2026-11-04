@@ -1,6 +1,10 @@
+mod device;
+mod encoder;
 mod graphics_context;
 
 pub use crate::backend::GpuBackend;
+pub use device::Device;
+pub use encoder::CommandEncoder;
 pub use graphics_context::GraphicsContext;
 pub use rotex_types::RhiCommand;
 pub use rotex_types::{
