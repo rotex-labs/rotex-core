@@ -9,5 +9,4 @@ repository = "https://github.com/rotexengine/rotex-core"
 [dependencies]
 async-trait = "0.1.89"
 thiserror = "2.0.18"
-raw-window-handle = "0.6.2"
 rotex-types = { version = "0.2.0" }
