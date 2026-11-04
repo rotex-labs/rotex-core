@@ -1,8 +1,8 @@
 use crate::backend::GpuBackend;
 use crate::error::Error;
 use rotex_types::{
-    CreatedResources, Extent2D, ResourceBatchCreate, ResourceBatchUpdate, RhiCommand,
-    SurfaceDescriptor, TextureId, TextureReadback,
+    BackendCapabilities, CreatedResources, Extent2D, ResourceBatchCreate, ResourceBatchUpdate,
+    RhiCommand, SurfaceDescriptor, TextureId, TextureReadback,
 };
 
 pub struct GraphicsContext {
@@ -12,6 +12,10 @@ pub struct GraphicsContext {
 impl GraphicsContext {
     pub fn new(backend: Box<dyn GpuBackend>) -> Self {
         Self { backend }
+    }
+
+    pub fn capabilities(&self) -> BackendCapabilities {
+        self.backend.capabilities()
     }
 
     pub fn attach_surface(&mut self, surface_descriptor: SurfaceDescriptor) -> Result<(), Error> {

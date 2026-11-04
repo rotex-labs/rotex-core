@@ -7,6 +7,7 @@ pub enum Severity {
 }
 
 #[derive(Error, Debug)]
+#[non_exhaustive]
 pub enum ErrorKind {
     #[error("No compatible physical device found")]
     NoCompatibleDevice,
@@ -49,5 +50,9 @@ impl Error {
             kind,
             severity: Severity::Warning,
         }
+    }
+
+    pub fn unsupported(message: &'static str) -> Self {
+        Self::fatal(ErrorKind::Unsupported(message))
     }
 }
