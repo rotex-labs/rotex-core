@@ -2,7 +2,7 @@
 name = "rotex-conformance"
 version = "0.2.0"
 edition = "2024"
-license = "MIT"
+license = "MIT OR Apache-2.0"
 description = "GpuBackend checks driven by reported capabilities"
 repository = "https://github.com/rotexengine/rotex-conformance"
 
