@@ -24,10 +24,6 @@
 
 Version 0.2.0. The crate adds no render policy and does not depend on a backend.
 
-## Part of Rotex
-
-Rotex is a graphics HAL workspace. See [rotex-dev](https://github.com/rotex-labs/rotex-dev) for the architecture and the other crates.
-
 ## License
 
 Licensed under either of
