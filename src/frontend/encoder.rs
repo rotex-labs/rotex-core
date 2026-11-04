@@ -6,8 +6,9 @@
 use std::marker::PhantomData;
 
 use rotex_types::{
-    BarrierResource, BindGroupId, BufferId, ComputePipelineId, GraphicsPipelineId, IndexFormat,
-    MeshId, PassDescriptor, QuerySetId, ResourceState, RhiCommand, ShaderStageFlags, TextureId,
+    BarrierResource, BindGroupId, BufferId, ComputePipelineId, FeatureId, GraphicsPipelineId,
+    IndexFormat, MeshId, PassDescriptor, QuerySetId, ResourceState, RhiCommand, ShaderStageFlags,
+    TextureId,
 };
 
 pub struct CommandEncoder<B = ()> {
@@ -300,6 +301,15 @@ impl<B> CommandEncoder<B> {
             buffer,
             offset,
             format,
+        });
+        self
+    }
+
+    pub fn extension(&mut self, feature: FeatureId, opcode: u32, payload: Vec<u8>) -> &mut Self {
+        self.commands.push(RhiCommand::Extension {
+            feature,
+            opcode,
+            payload,
         });
         self
     }
