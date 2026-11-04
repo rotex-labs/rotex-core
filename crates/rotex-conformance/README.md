@@ -24,10 +24,6 @@ Checks a backend against the capabilities it reports.
 
 Version 0.2.0. Backend tests call `run` and return when platform or device creation fails. This crate does not create a device.
 
-## Part of Rotex
-
-Rotex is a graphics HAL workspace. See [rotex-dev](https://github.com/rotex-labs/rotex-dev) for the architecture and the other crates.
-
 ## License
 
 Licensed under either of
