@@ -374,10 +374,28 @@ impl ComputePipelineDescriptor {
     }
 
     pub fn new(shader: crate::shader::ShaderPackage) -> Self {
+        let bindings = shader
+            .layout
+            .bind_groups
+            .iter()
+            .flat_map(|group| {
+                group.entries.iter().filter_map(|entry| {
+                    if entry.ty == BindingType::StorageBuffer {
+                        Some(ComputeBindingLayout {
+                            set: group.set,
+                            binding: entry.binding,
+                            readonly: entry.readonly,
+                        })
+                    } else {
+                        None
+                    }
+                })
+            })
+            .collect();
         Self {
             shader_spv: shader.spirv_bytes().map(|b| b.to_vec()).unwrap_or_default(),
             entry_point: shader.entry_point,
-            bindings: Vec::new(),
+            bindings,
         }
     }
 }

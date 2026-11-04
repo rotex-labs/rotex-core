@@ -1,11 +1,10 @@
 use crate::caps::FeatureId;
-use crate::frame::{ComputePassDescriptor, PassDescriptor};
+use crate::frame::PassDescriptor;
+use crate::resource::ShaderStageFlags;
 use crate::resource::geometry::IndexFormat;
 use crate::resource::ids::{
-    BindGroupId, BufferId, ComputePipelineId, GraphicsPipelineId, MaterialId, MeshId, QuerySetId,
-    TextureId,
+    BindGroupId, BufferId, ComputePipelineId, GraphicsPipelineId, MeshId, QuerySetId, TextureId,
 };
-use crate::resource::{AccessType, ShaderStageFlags};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[non_exhaustive]
@@ -44,21 +43,10 @@ pub enum RhiCommand {
         offset: u64,
         data: Vec<u8>,
     },
-    TransitionBuffer {
-        buffer: BufferId,
-        from: AccessType,
-        to: AccessType,
-    },
-    DispatchCompute(ComputePassDescriptor),
     BeginRenderPass {
         pass: PassDescriptor,
     },
     EndRenderPass,
-    BindGraphicsPipeline {
-        material: MaterialId,
-        mesh: MeshId,
-        depth_enabled: bool,
-    },
     BindGroups {
         first_slot: u32,
         bind_groups: Vec<BindGroupId>,

@@ -28,6 +28,8 @@ pub enum ShaderPayload {
     Wgsl(String),
     Dxil(Vec<u8>),
     HlslSource(String),
+    Msl(String),
+    Glsl(String),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
@@ -36,6 +38,8 @@ pub struct ShaderVariantMap {
     pub wgsl: Option<ShaderPayload>,
     pub dxil: Option<ShaderPayload>,
     pub hlsl: Option<ShaderPayload>,
+    pub msl: Option<ShaderPayload>,
+    pub glsl: Option<ShaderPayload>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
