@@ -2,7 +2,7 @@
 name = "rotex-graph"
 version = "0.2.0"
 edition = "2024"
-license = "MIT"
+license = "MIT OR Apache-2.0"
 description = "Render graph that emits destination-only Barrier commands"
 repository = "https://github.com/rotexengine/rotex-graph"
 
