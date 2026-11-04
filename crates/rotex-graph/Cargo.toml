@@ -7,5 +7,4 @@ description = "Render graph that emits destination-only Barrier commands"
 repository = "https://github.com/rotexengine/rotex-graph"
 
 [dependencies]
-rotex-core = { version = "0.2.0" }
 rotex-types = { version = "0.2.0" }
