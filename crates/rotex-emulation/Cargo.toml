@@ -2,7 +2,7 @@
 name = "rotex-emulation"
 version = "0.2.0"
 edition = "2024"
-license = "MIT"
+license = "MIT OR Apache-2.0"
 description = "Backend-independent command rewrites for missing HAL features"
 repository = "https://github.com/rotexengine/rotex-emulation"
 
