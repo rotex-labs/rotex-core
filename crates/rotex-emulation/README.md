@@ -24,10 +24,6 @@ Optional command-list rewrite before `execute`.
 
 Version 0.2.0. Backends do not depend on this crate. A missing stand-in buffer or fallback target returns unsupported.
 
-## Part of Rotex
-
-Rotex is a graphics HAL workspace. See [rotex-dev](https://github.com/rotex-labs/rotex-dev) for the architecture and the other crates.
-
 ## License
 
 Licensed under either of
