@@ -3,21 +3,26 @@
 //! Backends implement [`GpuPlatform`]. User code selects a backend via a type alias
 //! (e.g. `type AppGpuPlatform = rotex_vulkan::VulkanGpuPlatform`) and calls the
 //! generic helpers here. For direct access to backend internals, hold the concrete
-//! bridge type returned from `create_backend` — [`GraphicsContext`] is optional.
+//! bridge type returned from [`GpuPlatform::create_backend`] — [`GraphicsContext`] is optional.
 
 use crate::backend::GpuBackend;
 use crate::error::{Error, ErrorKind};
 use crate::frontend::GraphicsContext;
 use rotex_types::{AdapterId, AdapterInfo, DeviceDescriptor, PlatformDescriptor};
 
+/// Enumeration and device creation implemented by one GPU backend.
 #[async_trait::async_trait]
 pub trait GpuPlatform: Sized {
+    /// Concrete backend produced for a selected adapter.
     type Backend: GpuBackend;
 
+    /// Builds the platform object used to enumerate adapters.
     async fn new(platform_descriptor: PlatformDescriptor) -> Result<Self, Error>;
 
+    /// Lists adapters visible to this platform.
     async fn enumerate_adapters(&self) -> Result<Vec<AdapterInfo>, Error>;
 
+    /// Opens a device on `adapter_id` and returns the backend.
     async fn create_backend(
         self,
         adapter_id: AdapterId,
@@ -25,6 +30,7 @@ pub trait GpuPlatform: Sized {
     ) -> Result<Self::Backend, Error>;
 }
 
+/// Creates a platform and returns it together with the adapter list.
 pub async fn enumerate_adapters<G: GpuPlatform>(
     platform_descriptor: PlatformDescriptor,
 ) -> Result<(G, Vec<AdapterInfo>), Error> {
@@ -33,6 +39,7 @@ pub async fn enumerate_adapters<G: GpuPlatform>(
     Ok((platform, adapters))
 }
 
+/// Opens a backend on an adapter the caller already chose.
 pub async fn create_backend<G: GpuPlatform>(
     platform: G,
     adapter_id: AdapterId,
@@ -41,6 +48,7 @@ pub async fn create_backend<G: GpuPlatform>(
     platform.create_backend(adapter_id, device_descriptor).await
 }
 
+/// Enumerates adapters, then opens the one `select` returns.
 pub async fn create_backend_with_selection<G, F>(
     platform_descriptor: PlatformDescriptor,
     device_descriptor: DeviceDescriptor,
@@ -56,6 +64,7 @@ where
     create_backend(platform, adapter_id, device_descriptor).await
 }
 
+/// Opens a backend and wraps it in a [`GraphicsContext`].
 pub async fn create_graphics_context<G, F>(
     platform_descriptor: PlatformDescriptor,
     device_descriptor: DeviceDescriptor,

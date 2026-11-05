@@ -1,6 +1,12 @@
-//! Capability-driven checks for a [`GpuBackend`]. Backends call [`run`] from
-//! their own tests. A missing device is the caller's concern: this function
-//! assumes the backend was already created.
+#![deny(missing_docs)]
+#![deny(rustdoc::broken_intra_doc_links)]
+
+//! Capability-driven checks for a [`GpuBackend`].
+//!
+//! Backends call [`run`] from their own tests. A missing device is the caller's
+//! concern: this function assumes the backend was already created. Checks read
+//! [`rotex_types::CoreCaps`] and submit [`rotex_types::RhiCommand`] values through
+//! the [`rotex_core`] backend trait.
 
 use rotex_core::{Error, GpuBackend};
 use rotex_types::{
@@ -11,6 +17,7 @@ use rotex_types::{
     TextureFormat,
 };
 
+/// Runs the capability checks for a backend that was already created.
 pub fn run(backend: &mut impl GpuBackend) -> Result<(), Error> {
     let caps = backend.capabilities();
     duplicate_create_and_destroy(backend)?;

@@ -28,6 +28,11 @@ jobs:
       - name: Clippy
         run: cargo clippy --workspace --all-targets --all-features -- -D warnings
 
+      - name: Rustdoc
+        run: cargo doc --workspace --no-deps --all-features
+        env:
+          RUSTDOCFLAGS: -D missing_docs -D rustdoc::broken_intra_doc_links
+
       - name: Install cargo-machete
         uses: taiki-e/install-action@v2
         with:

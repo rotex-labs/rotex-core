@@ -1,3 +1,5 @@
+//! Resource handles, descriptors, and the batches that create or update them.
+
 pub mod batch;
 pub mod descriptors;
 pub mod geometry;

@@ -1,3 +1,5 @@
+//! Thin owners of a backend and the encoder that builds [`RhiCommand`] lists.
+
 mod device;
 mod encoder;
 mod graphics_context;

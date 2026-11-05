@@ -1,3 +1,12 @@
+#![deny(missing_docs)]
+#![deny(rustdoc::broken_intra_doc_links)]
+
+//! Backend-agnostic GPU vocabulary: handles, descriptors, and explicit [`RhiCommand`] lists.
+//!
+//! The main types are [`RhiCommand`], [`ResourceBatchCreate`], [`PassDescriptor`],
+//! [`DeviceDescriptor`], and [`AdapterInfo`]. Callers own scene state and command
+//! composition; this crate defines the values a backend translates.
+
 pub mod caps;
 pub mod device;
 pub mod format;
