@@ -1,5 +1,12 @@
-//! Pure rewrites of an [`RhiCommand`] list. Backends do not depend on this crate.
-//! Call [`rewrite`] before `execute` when a device reports a feature as absent.
+#![deny(missing_docs)]
+#![deny(rustdoc::broken_intra_doc_links)]
+
+//! Pure rewrites of an [`RhiCommand`] list.
+//!
+//! Backends do not depend on this crate. Call [`rewrite`] before `execute` when a
+//! device reports a feature as absent. Stand-in resources live in
+//! [`EmulationResources`]. Capability flags come from [`rotex_types`], and failures
+//! use [`rotex_core::Error`].
 
 use std::collections::HashMap;
 
@@ -11,11 +18,13 @@ use rotex_types::{
 /// Caller-owned stand-ins. The rewriter never allocates a GPU resource.
 #[derive(Default)]
 pub struct EmulationResources {
+    /// Uniform buffer that receives lowered push-constant writes.
     pub push_constant_buffer: Option<BufferId>,
+    /// Color target substituted when render-to-texture is absent.
     pub texture_pass_fallback: Option<PassColorTarget>,
 }
 
-/// Lower absent features, then drop repeated fixed-function state.
+/// Lowers absent features, then drops repeated fixed-function state.
 pub fn rewrite(
     commands: &[RhiCommand],
     caps: &CoreCaps,

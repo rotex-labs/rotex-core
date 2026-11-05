@@ -5,6 +5,10 @@ edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "GpuBackend trait and GraphicsContext adapter interface for Rotex engine backends"
 repository = "https://github.com/rotex-labs/rotex-core"
+documentation = "https://docs.rs/rotex-core"
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
 async-trait = "0.1.89"

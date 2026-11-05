@@ -5,6 +5,10 @@ edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "GpuBackend checks driven by reported capabilities"
 repository = "https://github.com/rotex-labs/rotex-core"
+documentation = "https://docs.rs/rotex-conformance"
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
 rotex-core = { path = "../rotex-core", version = "0.2.0" }

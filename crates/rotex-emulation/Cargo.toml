@@ -5,6 +5,10 @@ edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "Backend-independent command rewrites for missing HAL features"
 repository = "https://github.com/rotex-labs/rotex-core"
+documentation = "https://docs.rs/rotex-emulation"
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
 rotex-core = { path = "../rotex-core", version = "0.2.0" }

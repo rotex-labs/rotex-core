@@ -1,8 +1,45 @@
+#![deny(missing_docs)]
+#![deny(rustdoc::broken_intra_doc_links)]
+
 //! Turn declared pass usage into destination-only [`RhiCommand::Barrier`] commands.
 //!
 //! The graph does not create resources or read GPU objects. A resource with no
 //! initial state emits nothing on its first declared use. A later use in a
-//! different state emits one barrier carrying only the destination.
+//! different state emits one barrier carrying only the destination. Pass
+//! descriptors and commands come from [`rotex_types`].
+//!
+//! ```
+//! use rotex_graph::{GraphPass, record};
+//! use rotex_types::{
+//!     BarrierResource, FramePass, PassColorTarget, PassDescriptor, ResourceState, RhiCommand,
+//!     TextureId,
+//! };
+//!
+//! let texture = TextureId(7);
+//! let draw = RhiCommand::Draw {
+//!     vertex_count: 3,
+//!     instance_count: 1,
+//!     first_vertex: 0,
+//!     first_instance: 0,
+//! };
+//! let write = GraphPass::new(
+//!     FramePass::Graphics(
+//!         PassDescriptor::new("write").with_color_target(PassColorTarget::Texture(texture)),
+//!     ),
+//!     vec![draw],
+//! );
+//! let commands = record(
+//!     &[(BarrierResource::Texture(texture), ResourceState::ShaderRead)],
+//!     &[write],
+//! );
+//! assert!(matches!(
+//!     &commands[0],
+//!     RhiCommand::Barrier {
+//!         state: ResourceState::ColorTarget,
+//!         ..
+//!     }
+//! ));
+//! ```
 
 use std::collections::HashMap;
 
@@ -16,12 +53,16 @@ use rotex_types::{
 /// `texture_access` declares sampled or storage use of a texture. A graphics
 /// color target wins over a read of the same texture in that pass.
 pub struct GraphPass {
+    /// Graphics or compute pass whose targets and buffer intents drive barriers.
     pub pass: FramePass,
+    /// Draw or dispatch commands spliced inside the pass markers.
     pub commands: Vec<RhiCommand>,
+    /// Sampled or storage uses of textures that are not color targets.
     pub texture_access: Vec<(TextureId, AccessType)>,
 }
 
 impl GraphPass {
+    /// Builds a pass with no extra texture accesses.
     pub fn new(pass: FramePass, commands: Vec<RhiCommand>) -> Self {
         Self {
             pass,
@@ -30,13 +71,14 @@ impl GraphPass {
         }
     }
 
+    /// Sets textures this pass samples or writes outside the color target.
     pub fn with_texture_access(mut self, texture_access: Vec<(TextureId, AccessType)>) -> Self {
         self.texture_access = texture_access;
         self
     }
 }
 
-/// Splice barriers and pass markers around the caller's commands.
+/// Splices destination barriers and pass markers around the caller's commands.
 pub fn record(
     initial: &[(BarrierResource, ResourceState)],
     passes: &[GraphPass],
