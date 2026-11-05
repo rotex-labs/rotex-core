@@ -1,0 +1,49 @@
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum VertexFormat {
+    Float32,
+    Float32x2,
+    Float32x3,
+    Float32x4,
+    Uint32,
+    Unorm8x4,
+    Float16x2,
+    Sint32,
+}
+
+impl VertexFormat {
+    pub fn size(&self) -> u64 {
+        match self {
+            Self::Float32 | Self::Uint32 | Self::Unorm8x4 | Self::Float16x2 | Self::Sint32 => 4,
+            Self::Float32x2 => 8,
+            Self::Float32x3 => 12,
+            Self::Float32x4 => 16,
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct VertexAttribute {
+    pub location: u32,
+    pub format: VertexFormat,
+    pub offset: u64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum VertexStepMode {
+    #[default]
+    Vertex,
+    Instance,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct VertexBufferLayout {
+    pub array_stride: u64,
+    pub step_mode: VertexStepMode,
+    pub attributes: Vec<VertexAttribute>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum IndexFormat {
+    Uint16,
+    Uint32,
+}

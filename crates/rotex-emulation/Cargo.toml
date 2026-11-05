@@ -1,0 +1,11 @@
+[package]
+name = "rotex-emulation"
+version = "0.2.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "Backend-independent command rewrites for missing HAL features"
+repository = "https://github.com/rotex-labs/rotex-core"
+
+[dependencies]
+rotex-core = { path = "../rotex-core", version = "0.2.0" }
+rotex-types = { path = "../rotex-types", version = "0.2.0" }

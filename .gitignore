@@ -1,4 +1,2 @@
 /target
-Cargo.lock
-/shaders
-/.vscode
+/Cargo.lock

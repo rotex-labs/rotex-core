@@ -1,0 +1,12 @@
+[package]
+name = "rotex-core"
+version = "0.2.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "GpuBackend trait and GraphicsContext adapter interface for Rotex engine backends"
+repository = "https://github.com/rotex-labs/rotex-core"
+
+[dependencies]
+async-trait = "0.1.89"
+thiserror = "2.0.18"
+rotex-types = { path = "../rotex-types", version = "0.2.0" }
