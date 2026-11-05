@@ -26,7 +26,7 @@ Declared pass usage becomes destination-only `Barrier` commands.
 
 ## Dependencies
 
-`rotex-core` and `rotex-types`.
+`rotex-types`.
 
 ## Status
 
