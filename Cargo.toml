@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/rotex-types",
+    "crates/rotex-core",
+    "crates/rotex-conformance",
+    "crates/rotex-graph",
+    "crates/rotex-emulation",
+]

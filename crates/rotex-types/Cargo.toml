@@ -4,7 +4,7 @@ version = "0.2.0"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "Types used by rotexengine tools"
-repository = "https://github.com/rotex-labs/rotex-types"
+repository = "https://github.com/rotex-labs/rotex-core"
 
 [dependencies]
 raw-window-handle = "0.6.2"

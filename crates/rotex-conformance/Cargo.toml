@@ -4,8 +4,8 @@ version = "0.2.0"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 description = "GpuBackend checks driven by reported capabilities"
-repository = "https://github.com/rotex-labs/rotex-conformance"
+repository = "https://github.com/rotex-labs/rotex-core"
 
 [dependencies]
-rotex-core = { version = "0.2.0" }
-rotex-types = { version = "0.2.0" }
+rotex-core = { path = "../rotex-core", version = "0.2.0" }
+rotex-types = { path = "../rotex-types", version = "0.2.0" }

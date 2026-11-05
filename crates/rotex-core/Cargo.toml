@@ -9,4 +9,4 @@ repository = "https://github.com/rotex-labs/rotex-core"
 [dependencies]
 async-trait = "0.1.89"
 thiserror = "2.0.18"
-rotex-types = { version = "0.2.0" }
+rotex-types = { path = "../rotex-types", version = "0.2.0" }
