@@ -1,5 +1,9 @@
 //! Shader packages, pipeline layouts, and their serialized payloads.
 
+mod artifact;
+
+pub use artifact::*;
+
 use crate::resource::BindGroupLayoutDescriptor;
 use serde::{Deserialize, Serialize};
 use std::hash::{DefaultHasher, Hash, Hasher};

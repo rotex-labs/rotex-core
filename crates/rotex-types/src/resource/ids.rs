@@ -73,6 +73,7 @@ generational_id!(
     "Generational id for a graphics pipeline slot."
 );
 generational_id!(QuerySetId, "Generational id for a query set slot.");
+generational_id!(ShaderId, "Generational id for a shader module slot.");
 
 /// User-owned index and generation allocator.
 ///

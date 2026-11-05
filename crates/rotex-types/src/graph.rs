@@ -26,6 +26,11 @@ pub enum ResourceState {
     DepthTarget,
     /// The resource is bound as a vertex buffer.
     VertexBuffer,
+    /// The last shader write is visible to vertex fetch and to a later shader read.
+    ///
+    /// Use this after a compute write that the same frame draws and the next frame
+    /// reads. The barrier publishes that write without waiting for earlier vertex fetches.
+    VertexShaderRead,
     /// The resource is bound as an index buffer.
     IndexBuffer,
     /// The resource is bound as a uniform buffer.

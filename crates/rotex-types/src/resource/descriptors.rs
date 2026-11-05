@@ -409,10 +409,14 @@ pub struct ComputeBindingLayout {
 pub struct ComputePipelineDescriptor {
     /// SPIR-V words for the compute shader.
     pub shader_spv: Vec<u8>,
-    /// Entry-point name inside [`Self::shader_spv`].
+    /// WGSL source for the compute shader, when the artifact included it.
+    pub wgsl: Option<String>,
+    /// Entry-point name inside [`Self::shader_spv`] or [`Self::wgsl`].
     pub entry_point: String,
     /// Storage-buffer slots the shader uses.
     pub bindings: Vec<ComputeBindingLayout>,
+    /// Push-constant ranges the compute shader reads.
+    pub push_constants: Vec<crate::shader::PushConstantRange>,
 }
 
 /// How a sampler filters texels.
@@ -462,11 +466,25 @@ pub enum PrimitiveTopology {
     TriangleStrip,
 }
 
+/// Equation used when a color attachment blends.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+pub enum BlendMode {
+    /// Write the source color as-is.
+    #[default]
+    Replace,
+    /// Add the source color to the attachment.
+    Additive,
+    /// Blend the source over the attachment with its alpha.
+    Alpha,
+}
+
 /// Whether color writes are blended with the attachment.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub struct BlendState {
-    /// Enables blending when true.
+    /// Enables blending when true and [`Self::mode`] is [`BlendMode::Replace`].
     pub enabled: bool,
+    /// Blend equation. [`BlendMode::Replace`] leaves blending off unless [`Self::enabled`] is set.
+    pub mode: BlendMode,
 }
 
 /// Shaders and fixed state used to create a graphics pipeline.
@@ -518,9 +536,17 @@ impl ComputePipelineDescriptor {
     ) -> Self {
         Self {
             shader_spv,
+            wgsl: None,
             entry_point,
             bindings,
+            push_constants: Vec::new(),
         }
+    }
+
+    /// Stores WGSL used by the WebGPU backend instead of the SPIR-V words.
+    pub fn with_wgsl(mut self, wgsl: impl Into<String>) -> Self {
+        self.wgsl = Some(wgsl.into());
+        self
     }
 
     /// Builds a pipeline from a shader package, keeping its storage-buffer slots.
@@ -545,8 +571,10 @@ impl ComputePipelineDescriptor {
             .collect();
         Self {
             shader_spv: shader.spirv_bytes().map(|b| b.to_vec()).unwrap_or_default(),
+            wgsl: shader.wgsl_source().map(str::to_string),
             entry_point: shader.entry_point,
             bindings,
+            push_constants: shader.layout.push_constants,
         }
     }
 }

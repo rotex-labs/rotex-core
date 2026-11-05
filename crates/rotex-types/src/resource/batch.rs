@@ -8,8 +8,9 @@ use crate::resource::descriptors::{
 use crate::resource::geometry::IndexFormat;
 use crate::resource::ids::{
     BindGroupId, BindGroupLayoutId, BufferId, ComputePipelineId, GraphicsPipelineId, MaterialId,
-    MeshId, QuerySetId, SamplerId, TextureId,
+    MeshId, QuerySetId, SamplerId, ShaderId, TextureId,
 };
+use crate::shader::ShaderArtifact;
 
 /// One resource to create, tagged with the raw id stored on its handle.
 #[derive(Debug, Clone)]
@@ -86,6 +87,13 @@ pub enum ResourceCreateDescriptor {
         /// Slot count and query kind.
         query_set: QuerySetDescriptor,
     },
+    /// Creates a shader module from a cooked artifact.
+    Shader {
+        /// Raw id copied into the created shader handle.
+        id: u64,
+        /// Artifact whose payload the backend loads.
+        artifact: ShaderArtifact,
+    },
 }
 
 /// A group of resources to create in one backend call.
@@ -126,6 +134,8 @@ pub enum ResourceHandle {
     GraphicsPipeline(GraphicsPipelineId),
     /// Created query set.
     QuerySet(QuerySetId),
+    /// Created shader module.
+    Shader(ShaderId),
 }
 
 /// Handles returned for one [`ResourceBatchCreate`], in request order.
