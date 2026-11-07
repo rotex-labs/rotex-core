@@ -3,26 +3,6 @@
 use crate::caps::{CoreCaps, FeatureSet};
 use crate::format::Limits;
 
-/// Optional fixed-function features a device may expose.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub struct DeviceFeatures {
-    /// Anisotropic filtering is available.
-    pub sampler_anisotropy: bool,
-    /// Non-solid fill modes are available.
-    pub fill_mode_non_solid: bool,
-    /// Line widths other than 1.0 are available.
-    pub wide_lines: bool,
-}
-
-impl DeviceFeatures {
-    /// Returns whether `self` has every feature set on `required`.
-    pub const fn covers(self, required: Self) -> bool {
-        (!required.sampler_anisotropy || self.sampler_anisotropy)
-            && (!required.fill_mode_non_solid || self.fill_mode_non_solid)
-            && (!required.wide_lines || self.wide_lines)
-    }
-}
-
 /// Queues the caller needs when opening a device.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct WorkQueueHints {
@@ -37,12 +17,10 @@ pub struct WorkQueueHints {
 /// Requirements checked before a caller accepts an adapter.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct DeviceDescriptor {
-    /// Fixed-function features the device must support.
-    pub required_features: DeviceFeatures,
+    /// Optional feature bits the device must support.
+    pub required_features: FeatureSet,
     /// Queue families the device must expose.
     pub work_queues: WorkQueueHints,
-    /// Optional feature bits the device must support.
-    pub required_extensions: FeatureSet,
     /// Limits the device must meet.
     pub required_limits: Limits,
 }
@@ -51,14 +29,22 @@ impl DeviceDescriptor {
     /// Requirements for a graphics device with a copy queue.
     pub fn default_graphics() -> Self {
         Self {
-            required_features: DeviceFeatures::default(),
+            required_features: FeatureSet::empty(),
             work_queues: WorkQueueHints {
                 needs_graphics: true,
                 needs_compute: false,
                 needs_copy: true,
             },
-            required_extensions: FeatureSet::empty(),
             required_limits: Limits::CORE_MIN,
+        }
+    }
+
+    /// Adds `features` to the required set.
+    pub const fn require(self, features: FeatureSet) -> Self {
+        Self {
+            required_features: self.required_features.union(features),
+            work_queues: self.work_queues,
+            required_limits: self.required_limits,
         }
     }
 }
@@ -129,12 +115,10 @@ pub struct AdapterCapabilities {
     pub supports_window_presentation: bool,
     /// Queue counts by family.
     pub queue_support: AdapterQueueSupport,
-    /// Fixed-function features the adapter supports.
-    pub available_features: DeviceFeatures,
+    /// Optional feature bits the adapter supports.
+    pub features: FeatureSet,
     /// Numeric limits the adapter supports.
     pub limits: Limits,
-    /// Optional feature bits the adapter supports.
-    pub extensions: FeatureSet,
     /// Core HAL features and whether each is native, emulated, or absent.
     pub core: CoreCaps,
 }

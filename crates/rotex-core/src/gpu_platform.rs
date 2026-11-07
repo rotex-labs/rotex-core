@@ -83,18 +83,7 @@ where
 /// Pure compatibility check for filtering adapters before user selection.
 /// This is not selection or scoring policy.
 pub fn adapter_meets_requirements(info: &AdapterInfo, desc: &DeviceDescriptor) -> bool {
-    if !info
-        .capabilities
-        .available_features
-        .covers(desc.required_features)
-    {
-        return false;
-    }
-    if !info
-        .capabilities
-        .extensions
-        .contains(desc.required_extensions)
-    {
+    if !info.capabilities.features.contains(desc.required_features) {
         return false;
     }
     if !info.capabilities.limits.satisfies(desc.required_limits) {

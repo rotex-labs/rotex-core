@@ -66,6 +66,12 @@ impl FeatureSet {
     pub const VRS: Self = Self(1 << 4);
     /// Timeline semaphore synchronization.
     pub const TIMELINE_SYNC: Self = Self(1 << 5);
+    /// Anisotropic filtering.
+    pub const SAMPLER_ANISOTROPY: Self = Self(1 << 6);
+    /// Non-solid fill modes.
+    pub const FILL_MODE_NON_SOLID: Self = Self(1 << 7);
+    /// Line widths other than 1.0.
+    pub const WIDE_LINES: Self = Self(1 << 8);
 
     /// A set with no optional features.
     pub const fn empty() -> Self {
@@ -85,6 +91,14 @@ impl FeatureSet {
     /// Returns whether no optional features are set.
     pub const fn is_empty(self) -> bool {
         self.0 == 0
+    }
+}
+
+impl core::ops::BitOr for FeatureSet {
+    type Output = Self;
+
+    fn bitor(self, rhs: Self) -> Self::Output {
+        self.union(rhs)
     }
 }
 
@@ -120,5 +134,5 @@ pub struct BackendCapabilities {
     /// Numeric limits of the device.
     pub limits: Limits,
     /// Optional feature bits the device supports.
-    pub extensions: FeatureSet,
+    pub features: FeatureSet,
 }

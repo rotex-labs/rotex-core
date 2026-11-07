@@ -12,9 +12,9 @@ pub use rotex_types::RhiCommand;
 pub use rotex_types::{
     AccessType, BufferDescriptor, BufferId, BufferUsage, BufferUsageIntent, BufferUsages,
     CameraDescriptor, ColorAttachmentLoad, ComputePassDescriptor, ComputePipelineDescriptor,
-    ComputePipelineId, CreatedResources, DepthAttachmentLoad, DeviceDescriptor, DeviceFeatures,
-    Extent2D, GraphicsShaderPackage, IndexFormat, MaterialDescriptor, MaterialId, MeshDescriptor,
-    MeshId, MeshInstanceDescriptor, PassColorTarget, PassDescriptor, PlatformDescriptor,
+    ComputePipelineId, CreatedResources, DepthAttachmentLoad, DeviceDescriptor, Extent2D,
+    GraphicsShaderPackage, IndexFormat, MaterialDescriptor, MaterialId, MeshDescriptor, MeshId,
+    MeshInstanceDescriptor, PassColorTarget, PassDescriptor, PlatformDescriptor,
     ResourceBatchCreate, ResourceBatchUpdate, ResourceCreateDescriptor, ResourceHandle,
     ResourceUpdateDescriptor, SceneDescriptor, ShaderPackage, SurfaceDescriptor, TextureDescriptor,
     TextureFormat, TextureId, TextureReadback, VertexAttribute, VertexBufferLayout, VertexFormat,

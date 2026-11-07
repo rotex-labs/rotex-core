@@ -2,13 +2,41 @@
 
 use raw_window_handle::RawDisplayHandle;
 
+/// API validation and diagnostics requested at platform creation.
+///
+/// Backends that have a validation layer honor this. Backends without one,
+/// including GL, ignore it. The heavy GPU-based validation modes are not
+/// represented here.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum DebugMode {
+    /// No validation layer and no debug messenger.
+    Off,
+    /// The backend's standard validation layer and diagnostics.
+    Validation,
+}
+
+impl DebugMode {
+    /// Validation when debug assertions are enabled, otherwise [`Self::Off`].
+    pub const fn from_build() -> Self {
+        if cfg!(debug_assertions) {
+            Self::Validation
+        } else {
+            Self::Off
+        }
+    }
+}
+
+impl Default for DebugMode {
+    fn default() -> Self {
+        Self::from_build()
+    }
+}
+
 /// Settings for creating a GPU platform object.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy, Default)]
 pub struct PlatformDescriptor {
-    /// Enables API validation layers when the backend has them.
-    pub enable_validation: bool,
-    /// Extra platform extensions the caller wants enabled.
-    pub platform_extensions: Vec<String>,
+    /// Validation and diagnostics the backend should enable.
+    pub debug: DebugMode,
     /// Display connection a presentation surface will use.
     ///
     /// Vulkan turns this into the instance extensions the window system requires.
@@ -16,12 +44,14 @@ pub struct PlatformDescriptor {
     pub display_handle: Option<RawDisplayHandle>,
 }
 
-impl Default for PlatformDescriptor {
-    fn default() -> Self {
+impl PlatformDescriptor {
+    /// A descriptor that presents on `display_handle`.
+    ///
+    /// Debug mode follows [`DebugMode::from_build`].
+    pub const fn with_display(display_handle: RawDisplayHandle) -> Self {
         Self {
-            enable_validation: cfg!(debug_assertions),
-            platform_extensions: Vec::new(),
-            display_handle: None,
+            debug: DebugMode::from_build(),
+            display_handle: Some(display_handle),
         }
     }
 }
