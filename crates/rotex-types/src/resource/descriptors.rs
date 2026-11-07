@@ -417,6 +417,8 @@ pub struct ComputePipelineDescriptor {
     pub bindings: Vec<ComputeBindingLayout>,
     /// Push-constant ranges the compute shader reads.
     pub push_constants: Vec<crate::shader::PushConstantRange>,
+    /// DXIL bytes for the compute shader, when the package included them.
+    pub dxil: Option<Vec<u8>>,
 }
 
 /// How a sampler filters texels.
@@ -540,6 +542,7 @@ impl ComputePipelineDescriptor {
             entry_point,
             bindings,
             push_constants: Vec::new(),
+            dxil: None,
         }
     }
 
@@ -569,12 +572,19 @@ impl ComputePipelineDescriptor {
                 })
             })
             .collect();
+        let dxil = match shader.variants.dxil.as_ref() {
+            Some(crate::shader::ShaderPayload::Dxil(bytes)) if !bytes.is_empty() => {
+                Some(bytes.clone())
+            }
+            _ => None,
+        };
         Self {
             shader_spv: shader.spirv_bytes().map(|b| b.to_vec()).unwrap_or_default(),
             wgsl: shader.wgsl_source().map(str::to_string),
             entry_point: shader.entry_point,
             bindings,
             push_constants: shader.layout.push_constants,
+            dxil,
         }
     }
 }
