@@ -35,16 +35,8 @@ pub trait GpuBackend {
     /// Drops any cached command encoding derived from earlier submissions.
     fn invalidate_command_cache(&mut self) {}
 
-    /// Releases GPU objects owned by this backend.
-    fn destroy(self: Box<Self>);
-
-    /// Boxes `self` and releases its GPU objects.
-    fn into_shutdown(self)
-    where
-        Self: Sized,
-    {
-        Box::new(self).destroy();
-    }
+    /// Waits for submitted GPU work, then releases every object this backend owns.
+    fn destroy(self);
 }
 
 /// Marker for an optional GPU feature identified by [`FeatureId`].

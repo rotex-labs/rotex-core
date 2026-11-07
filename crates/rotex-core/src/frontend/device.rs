@@ -1,6 +1,6 @@
 //! Typed owner of a concrete [`GpuBackend`].
 //!
-//! [`crate::GraphicsContext`] remains the `dyn GpuBackend` path.
+//! [`crate::GraphicsContext`] is the same zero-cost wrapper used by examples.
 
 use super::encoder::CommandEncoder;
 use crate::backend::GpuBackend;
@@ -86,6 +86,6 @@ impl<B: GpuBackend> Device<B> {
 
     /// Releases GPU objects owned by the backend.
     pub fn destroy(self) {
-        self.backend.into_shutdown();
+        self.backend.destroy();
     }
 }

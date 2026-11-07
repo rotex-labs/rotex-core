@@ -4,8 +4,8 @@
 //! Single adapter surface over a GPU backend.
 //!
 //! [`GpuBackend`] is the stateless command translator. [`GpuPlatform`] enumerates
-//! adapters and opens a device. [`GraphicsContext`] and [`Device`] forward calls,
-//! and [`CommandEncoder`] builds [`rotex_types::RhiCommand`] lists. Failures use [`Error`].
+//! adapters and opens a device. [`GraphicsContext`] and [`Device`] are monomorphized
+//! forwarders, and [`CommandEncoder`] builds [`rotex_types::RhiCommand`] lists. Failures use [`Error`].
 //!
 //! Command, resource, and device types are re-exported from [`rotex_types`].
 

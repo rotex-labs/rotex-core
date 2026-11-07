@@ -69,16 +69,15 @@ pub async fn create_graphics_context<G, F>(
     platform_descriptor: PlatformDescriptor,
     device_descriptor: DeviceDescriptor,
     select: F,
-) -> Result<GraphicsContext, Error>
+) -> Result<GraphicsContext<G::Backend>, Error>
 where
     G: GpuPlatform,
-    G::Backend: GpuBackend + 'static,
     F: FnOnce(&[AdapterInfo]) -> Option<AdapterId>,
 {
     let backend =
         create_backend_with_selection::<G, F>(platform_descriptor, device_descriptor, select)
             .await?;
-    Ok(GraphicsContext::new(Box::new(backend)))
+    Ok(GraphicsContext::new(backend))
 }
 
 /// Pure compatibility check for filtering adapters before user selection.
