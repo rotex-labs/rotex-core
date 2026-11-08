@@ -22,15 +22,15 @@ This repository is the shared command vocabulary and the adapter surface every b
 
 | Package | Description | Version |
 |---------|-------------|---------|
-| [`rotex-types`](crates/rotex-types/README.md) | Backend-agnostic handles, descriptors, and `RhiCommand` sequences | 0.2.0 |
-| [`rotex-core`](crates/rotex-core/README.md) | `GpuBackend`, `GpuPlatform`, and a thin `GraphicsContext` | 0.2.0 |
-| [`rotex-conformance`](crates/rotex-conformance/README.md) | Checks a backend against the capabilities it reports | 0.2.0 |
-| [`rotex-graph`](crates/rotex-graph/README.md) | Declared pass usage becomes destination-only `Barrier` commands | 0.2.0 |
-| [`rotex-emulation`](crates/rotex-emulation/README.md) | Optional command-list rewrite before `execute` | 0.2.0 |
+| [`rotex-types`](crates/rotex-types/README.md) | Backend-agnostic handles, descriptors, and `RhiCommand` sequences | 0.3.0 |
+| [`rotex-core`](crates/rotex-core/README.md) | `GpuBackend`, `GpuPlatform`, and a thin `GraphicsContext` | 0.3.0 |
+| [`rotex-conformance`](crates/rotex-conformance/README.md) | Checks a backend against the capabilities it reports | 0.3.0 |
+| [`rotex-graph`](crates/rotex-graph/README.md) | Declared pass usage becomes destination-only `Barrier` commands | 0.3.0 |
+| [`rotex-emulation`](crates/rotex-emulation/README.md) | Optional command-list rewrite before `execute` | 0.3.0 |
 
 ## Dependencies
 
-Sibling crates depend on each other by path plus version. `rotex-core`, `rotex-conformance`, and `rotex-emulation` depend on `rotex-types`. `rotex-conformance` and `rotex-emulation` also depend on `rotex-core`. `rotex-graph` depends only on `rotex-types`. A requirement that leaves the slice stays a crates.io version. Each package keeps its own version and its own release tag, including `rotex-graph-v0.2.0` and `rotex-emulation-v0.2.0`.
+Sibling crates depend on each other by path plus version. `rotex-core`, `rotex-conformance`, and `rotex-emulation` depend on `rotex-types`. `rotex-conformance` and `rotex-emulation` also depend on `rotex-core`. `rotex-graph` depends only on `rotex-types`. A requirement that leaves the slice stays a crates.io version. Each package keeps its own version and its own release tag, including `rotex-graph-v0.3.0` and `rotex-emulation-v0.3.0`.
 
 ## License
 

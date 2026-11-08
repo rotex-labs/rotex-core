@@ -30,7 +30,7 @@ Declared pass usage becomes destination-only `Barrier` commands.
 
 ## Status
 
-Version 0.2.0. CPU only. Presentation acquire and present stay in the backend; the graph does not barrier the swapchain image.
+Version 0.3.0. CPU only. Presentation acquire and present stay in the backend; the graph does not barrier the swapchain image.
 
 ## License
 

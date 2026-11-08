@@ -30,7 +30,7 @@ Checks a backend against the capabilities it reports.
 
 ## Status
 
-Version 0.2.0. Backend tests call `run` and return when platform or device creation fails. This crate does not create a device.
+Version 0.3.0. Backend tests call `run` and return when platform or device creation fails. This crate does not create a device.
 
 ## License
 

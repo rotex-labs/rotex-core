@@ -30,7 +30,7 @@
 
 ## Status
 
-Version 0.2.0. The crate adds no render policy and does not depend on a backend.
+Version 0.3.0. The crate adds no render policy and does not depend on a backend.
 
 ## License
 

@@ -30,7 +30,7 @@ Optional command-list rewrite before `execute`.
 
 ## Status
 
-Version 0.2.0. Backends do not depend on this crate. A missing stand-in buffer or fallback target returns unsupported.
+Version 0.3.0. Backends do not depend on this crate. A missing stand-in buffer or fallback target returns unsupported.
 
 ## License
 

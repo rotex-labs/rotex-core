@@ -30,7 +30,7 @@ None.
 
 ## Status
 
-Version 0.2.0. This crate has no Rotex dependencies and no GPU API imports.
+Version 0.3.0. This crate has no Rotex dependencies and no GPU API imports.
 
 ## License
 
